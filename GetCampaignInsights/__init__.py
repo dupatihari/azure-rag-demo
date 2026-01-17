@@ -113,9 +113,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
         return func.HttpResponse(
             json.dumps({               
-                "question": question,
-                "rag": rag,
-                "citations": citations
+                "question:": question,
+                "rag:": rag,
+                "citations:": citations
             }),
             status_code=200,
             mimetype="application/json"
@@ -124,7 +124,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     except Exception as ex:
         logging.exception("GetCampaignInsights failed")
         return func.HttpResponse(
-            json.dumps({"error": str(ex)}),
+            json.dumps({"error ": str(ex)}),
             status_code=500,
             mimetype="application/json"
         )
