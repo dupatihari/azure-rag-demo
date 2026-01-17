@@ -3,3 +3,9 @@
 # azure-monitor-opentelemetry
 
 azure-functions
+azure-search-documents==11.6.0b4
+azure-identity
+openai
+python-dotenv
+azure-ai-inference
+
