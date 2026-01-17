@@ -113,9 +113,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
         return func.HttpResponse(
             json.dumps({               
-                "question:": question,
-                "rag:": rag,
-                "citations:": citations
+                "question": question,
+                "rag": rag,
+                "citations": citations
             }),
             status_code=200,
             mimetype="application/json"

@@ -27,6 +27,7 @@ export default function App() {
       }
 
       const data = await res.json();
+      console.log("API payload:", data);
       setResult(data);
     } catch (e) {
       setError(e.message);
@@ -36,7 +37,8 @@ export default function App() {
   };
 
   return (
-    <div style={{ maxWidth: 800, margin: "40px auto", fontFamily: "sans-serif" }}>
+    <div style={{ maxWidth: 800, margin: "40px auto", fontFamily: "sans-serif", color: "#fff" }}>
+
       <h2>Campaign Insights (RAG Demo)</h2><h4> - By Hari dupati</h4>
 
       <textarea
