@@ -37,9 +37,9 @@ export default function App() {
   };
 
   return (
-    <div style={{ maxWidth: 800, margin: "40px auto", fontFamily: "sans-serif", color: "#fff" }}>
+    <div style={{ maxWidth: 800, margin: "40px auto", fontFamily: "sans-serif" }}>
 
-      <h2>Campaign Insights (RAG Demo)</h2><h4> - By Hari dupati</h4>
+      <h2>Campaign Insights (RAG Demo)</h2><h4> - By Hari Dupati</h4>
 
       <textarea
         rows={3}
