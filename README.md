@@ -1,6 +1,6 @@
 # Azure RAG Demo
 
-A Retrieval-Augmented Generation (RAG) demo application that provides campaign insights using Azure AI services.  The project includes an Azure Function backend, a React frontend, and an MCP (Model Context Protocol) server for integration with AI assistants.
+A Retrieval-Augmented Generation (RAG) demo application that provides campaign insights using Azure AI services.  The project includes an Azure Function backend, a React frontend, and an MCP (Model Context Protocol) server that can be consumed by LLMs and AI agents.
 
 ## 🏗️ Architecture
 
@@ -12,10 +12,19 @@ This demo consists of three main components:
 
 ### Data Flow
 
+**Direct User Query:**
 ```
 User Query → Azure Function → Azure AI Search → Azure AI Foundry → JSON Response
                                 ↓
                         Campaign Documents
+```
+
+**MCP Server Integration (AI Agents/LLMs):**
+```
+AI Agent/LLM → MCP Server → Azure Function → Azure AI Search → Azure AI Foundry → Structured Response
+  (e.g., Copilot,              ↓                                    ↓
+   Claude, ChatGPT)    get_campaign_insights              Campaign Documents
+                            tool
 ```
 
 ## 🚀 Features
@@ -23,6 +32,7 @@ User Query → Azure Function → Azure AI Search → Azure AI Foundry → JSON 
 - **RAG-Powered Insights**: Combines Azure AI Search with Azure AI Foundry (OpenAI models)
 - **Campaign Analysis**: Query marketing campaign data and receive structured insights
 - **MCP Integration**: Expose insights via Model Context Protocol for AI assistant integration
+- **AI Agent Compatibility**: MCP server can be consumed by various LLMs and AI agents such as GitHub Copilot, Claude Desktop, ChatGPT, and custom agents
 - **React Frontend**: Modern UI for querying campaign data
 - **Containerized Deployment**: Docker support for MCP server
 
@@ -110,6 +120,54 @@ docker run -p 8000:8000 \
   mcp-campaign-insights
 ```
 
+## 🤖 Using MCP Server with AI Agents
+
+The MCP server exposes the `get_campaign_insights` tool that can be consumed by various LLMs and AI agents:
+
+### Supported AI Agents/LLMs:
+- **GitHub Copilot** (via Copilot Studio agents)
+- **Claude Desktop** (Anthropic)
+- **ChatGPT** (OpenAI with plugins)
+- **Custom AI Agents** (any system supporting MCP)
+
+### Connection Setup:
+
+**For Claude Desktop:**
+Add to your `claude_desktop_config.json`:
+```json
+{
+  "mcpServers": {
+    "campaign-insights": {
+      "url": "https://your-mcp-server-url.azurecontainerapps.io/mcp"
+    }
+  }
+}
+```
+
+**For GitHub Copilot Agents:**
+Configure the MCP server as a Model Context Protocol connection in Copilot Studio with the server URL.
+
+**For Custom Agents:**
+Use MCP Inspector or connect directly to the MCP endpoint at `/mcp` with streamable HTTP transport.
+
+### Example Agent Interaction:
+
+Once connected, AI agents can call the `get_campaign_insights` tool:
+
+```
+User: "Did strategy shift from Q1 2024 to Q4 2024?"
+
+Agent internally calls:
+Tool: get_campaign_insights
+Input: { "question": "Did strategy shift from Q1 2024 to Q4 2024?" }
+
+Agent receives structured response with:
+- Summary
+- Key Points
+- Recommendations
+- Citations
+```
+
 ## 📡 API Usage
 
 ### Azure Function Endpoint
@@ -151,6 +209,24 @@ curl "https://your-function-app.azurewebsites.net/api/GetCampaignInsights?q=What
 **POST** `/mcp`
 
 The MCP server exposes the `get_campaign_insights` tool for AI assistant integration.
+
+**Tool Definition:**
+```json
+{
+  "name": "get_campaign_insights",
+  "description": "Get campaign insights using a RAG pipeline backed by Azure AI Search and Azure OpenAI",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "question": {
+        "type": "string",
+        "description": "The campaign-related question to ask"
+      }
+    },
+    "required": ["question"]
+  }
+}
+```
 
 ## 🔧 Configuration
 
@@ -206,6 +282,14 @@ curl -X POST http://localhost:8000/mcp \
   -H "Content-Type: application/json" \
   -d '{"method": "tools/call", "params": {"name": "get_campaign_insights", "arguments": {"question": "What is the Q3 budget?"}}}'
 ```
+
+### Test with MCP Inspector
+
+Use the MCP Inspector tool to test the server connection and tool execution:
+1. Navigate to `http://localhost:6274` (or your MCP Inspector URL)
+2. Configure connection type as "Streamable HTTP"
+3. Enter your MCP server URL
+4. Test the `get_campaign_insights` tool with sample questions
 
 ## 📝 Development
 
