@@ -27,6 +27,28 @@ AI Agent/LLM → MCP Server → Azure Function → Azure AI Search → Azure AI 
                             tool
 ```
 
+
+## 📦 Project Structure
+
+```
+azure-rag-demo/
+├── GetCampaignInsights/          # Azure Function
+│   ├── __init__.py               # Main function logic
+│   ├── function.json             # Function binding config
+│   └── requirements.txt          # Python dependencies
+├── client/                       # React frontend
+│   ├── src/                      # React source code
+│   ├── package.json              # Node dependencies
+│   ├── vite.config.js            # Vite configuration
+│   └── index.html                # Entry HTML
+├── mcp-campaign-insights/        # MCP server
+│   ├── server.py                 # FastMCP server
+│   ├── Dockerfile                # Container config
+│   └── requirements.txt          # Python dependencies
+├── AzureResources.ipynb          # Azure setup notebook
+├── host.json                     # Function app config
+└── requirements.txt              # Root dependencies
+```
 ## 🚀 Features
 
 - **RAG-Powered Insights**: Combines Azure AI Search with Azure AI Foundry (OpenAI models)
@@ -245,27 +267,6 @@ The MCP server exposes the `get_campaign_insights` tool for AI assistant integra
 | `MCP_API_KEY` | Optional API key for MCP auth | No |
 | `PORT` | MCP server port | No (default: 8000) |
 
-## 📦 Project Structure
-
-```
-azure-rag-demo/
-├── GetCampaignInsights/          # Azure Function
-│   ├── __init__.py               # Main function logic
-│   ├── function.json             # Function binding config
-│   └── requirements.txt          # Python dependencies
-├── client/                       # React frontend
-│   ├── src/                      # React source code
-│   ├── package.json              # Node dependencies
-│   ├── vite.config.js            # Vite configuration
-│   └── index.html                # Entry HTML
-├── mcp-campaign-insights/        # MCP server
-│   ├── server.py                 # FastMCP server
-│   ├── Dockerfile                # Container config
-│   └── requirements.txt          # Python dependencies
-├── AzureResources.ipynb          # Azure setup notebook
-├── host.json                     # Function app config
-└── requirements.txt              # Root dependencies
-```
 
 ## 🧪 Testing
 
